@@ -1,0 +1,351 @@
+{
+	"info": {
+		"_postman_id": "71e93614-c521-407a-93f0-fc3f7c994bbb",
+		"name": "RESTAPITesting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "JSON Schema validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bca81065-c204-40df-ba37-e4cb722c47d2",
+						"exec": [
+							"var schema = {",
+							"    \"$schema\": \"http://json-schema.org/draft-07/schema\",",
+							"    \"$id\": \"http://example.com/example.json\",",
+							"    \"type\": \"array\",",
+							"    \"title\": \"The Root Schema\",",
+							"    \"description\": \"The root schema comprises the entire JSON document.\",",
+							"    \"default\": [],",
+							"    \"additionalItems\": true,",
+							"    \"items\": {",
+							"        \"$id\": \"#/items\",",
+							"        \"type\": \"object\",",
+							"        \"title\": \"The Items Schema\",",
+							"        \"description\": \"An explanation about the purpose of this instance.\",",
+							"        \"default\": {},",
+							"        \"examples\": [",
+							"            {",
+							"                \"first_name\": \"George\",",
+							"                \"last_name\": \"Blue\",",
+							"                \"email\": \"george.blue@company.com\",",
+							"                \"id\": 1.0",
+							"            },",
+							"            {",
+							"                \"email\": \"jolanda.red@company.com\",",
+							"                \"id\": 2.0,",
+							"                \"first_name\": \"Jolanda\",",
+							"                \"last_name\": \"Red\"",
+							"            },",
+							"            {",
+							"                \"first_name\": \"Susannah\",",
+							"                \"last_name\": \"Pink\",",
+							"                \"email\": \"susannah.pink@company.com\",",
+							"                \"id\": 3.0",
+							"            }",
+							"        ],",
+							"        \"additionalProperties\": true,",
+							"        \"required\": [",
+							"            \"id\",",
+							"            \"email\",",
+							"            \"first_name\",",
+							"            \"last_name\"",
+							"        ],",
+							"        \"properties\": {",
+							"            \"id\": {",
+							"                \"$id\": \"#/items/properties/id\",",
+							"                \"type\": \"integer\",",
+							"                \"title\": \"The Id Schema\",",
+							"                \"description\": \"An explanation about the purpose of this instance.\",",
+							"                \"default\": 0,",
+							"                \"examples\": [",
+							"                    1.0",
+							"                ]",
+							"            },",
+							"            \"email\": {",
+							"                \"$id\": \"#/items/properties/email\",",
+							"                \"type\": \"string\",",
+							"                \"title\": \"The Email Schema\",",
+							"                \"description\": \"An explanation about the purpose of this instance.\",",
+							"                \"default\": \"\",",
+							"                \"examples\": [",
+							"                    \"george.blue@company.com\"",
+							"                ]",
+							"            },",
+							"            \"first_name\": {",
+							"                \"$id\": \"#/items/properties/first_name\",",
+							"                \"type\": \"string\",",
+							"                \"title\": \"The First_name Schema\",",
+							"                \"description\": \"An explanation about the purpose of this instance.\",",
+							"                \"default\": \"\",",
+							"                \"examples\": [",
+							"                    \"George\"",
+							"                ]",
+							"            },",
+							"            \"last_name\": {",
+							"                \"$id\": \"#/items/properties/last_name\",",
+							"                \"type\": \"string\",",
+							"                \"title\": \"The Last_name Schema\",",
+							"                \"description\": \"An explanation about the purpose of this instance.\",",
+							"                \"default\": \"\",",
+							"                \"examples\": [",
+							"                    \"Blue\"",
+							"                ]",
+							"            }",
+							"        }",
+							"    }",
+							"};",
+							"",
+							"var data = pm.response.json();",
+							"",
+							"pm.test('Schema is valid', function() {",
+							"  pm.expect(tv4.validate(data, schema)).to.be.true;",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://my-json-server.typicode.com/olakowalczyk/RESTServer/data",
+					"protocol": "http",
+					"host": [
+						"my-json-server",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"olakowalczyk",
+						"RESTServer",
+						"data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5e4eb3ac-fdae-4950-8510-a6462b787650",
+						"exec": [
+							"// gets name of the first user and set it as environment variable",
+							"bodyData = JSON.parse(responseBody);",
+							"console.log(bodyData);",
+							"value = bodyData[0].first_name;",
+							"",
+							"pm.environment.set(\"user_name\", value);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1a434882-2782-427c-9a2c-6d8bf2a4c4de",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://my-json-server.typicode.com/olakowalczyk/RESTServer/data",
+					"protocol": "http",
+					"host": [
+						"my-json-server",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"olakowalczyk",
+						"RESTServer",
+						"data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8e19cccb-3fba-4404-86f5-57af7ab00425",
+						"exec": [
+							"//Checks whether first_name is properly updated",
+							"bodyData = JSON.parse(responseBody);",
+							"value = bodyData.first_name;",
+							"",
+							"pm.test(\"User data updated\", function () {",
+							"    pm.expect(value).to.equal(pm.environment.get(\"user_name\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"first_name\": \"{{user_name}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://my-json-server.typicode.com/olakowalczyk/RESTServer/data/2",
+					"protocol": "http",
+					"host": [
+						"my-json-server",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"olakowalczyk",
+						"RESTServer",
+						"data",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User assertions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "25370767-a824-4de2-a558-8105d816a9f5",
+						"exec": [
+							"pm.test(\"Check user data\", function () {\r",
+							"var jsonData = pm.response.json();\r",
+							"var index = jsonData.map(\r",
+							"function(firstname) {\r",
+							"return firstname.email; \r",
+							"}\r",
+							").indexOf('jolanda.red@company.com');\r",
+							"var user = jsonData[index];\r",
+							"\r",
+							"pm.expect(user).to.exist;\r",
+							"pm.expect(user.first_name).to.equal(\"Jolanda\");\r",
+							"pm.expect(user.last_name).to.equal(\"Red\");\r",
+							"\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://my-json-server.typicode.com/olakowalczyk/RESTServer/data",
+					"protocol": "http",
+					"host": [
+						"my-json-server",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"olakowalczyk",
+						"RESTServer",
+						"data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "92021bab-f49a-400c-855f-90b2ec1d74f0",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7aaac10f-c18e-4869-8723-d132f56939e5",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 10,\n    \"email\": \"new.user@company.com\",\n    \"first_name\": \"New\",\n    \"last_name\": \"User\"\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://my-json-server.typicode.com/olakowalczyk/RESTServer/data",
+					"protocol": "http",
+					"host": [
+						"my-json-server",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"olakowalczyk",
+						"RESTServer",
+						"data"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
